@@ -1,9 +1,29 @@
-# SuperMegaTeamBot3000
+# SuperMegaTeamBot
 
-> #### Config File
+> ### start
 >
-> - **token** [<span style="color:red">*str*</span>] - Ключ бота
-> - **level** [<span style="color:red">*str*</span>] - Уровень логов: DEBUG, INFO, WARN, ERROR, FATAL
-> - **write_log** [<span style="color:yellow">*bool*</span>] - Записывать ли логи в файл
+>> #### Настройка python
+>>
+>> Версия Python - 3.9.1
+>> Проверить версию
+>>> python -V
+>>
+>> Создать виртуальное окружение
+>>
+>>> python -m venv venv
+>>
+>> Запустить его
+>>> source ./venv/bin/activate
+>> 
+>> Установить библиотеки
+>>> pip install -r req.txt
+>>
 >
-
+>> #### Настройка конфиг файла
+>>
+>> Создать **config.json**
+>> Добавить следующие ключи и значения:
+>> - **token** [*str*] - Ключ бота
+>> - **level** [*str*] - Уровень логов: DEBUG, INFO, WARN, ERROR, FATAL
+>> - **write_log** [*bool*] - Записывать ли логи в файл
+>>
