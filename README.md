@@ -24,6 +24,6 @@
 >> Создать **config.json**
 >> Добавить следующие ключи и значения:
 >> - **token** [*str*] - Ключ бота
->> - **level** [*str*] - Уровень логов: DEBUG, INFO, WARN, ERROR, FATAL
->> - **write_log** [*bool*] - Записывать ли логи в файл
+>> - **level** [*str*] - Уровени логов: DEBUG, INFO, WARN, ERROR, FATAL
+>> - **write_file** [*bool*] - Записывать ли логи в файл
 >>
