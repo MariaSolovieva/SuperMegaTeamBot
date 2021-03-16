@@ -18,7 +18,7 @@ class VKBot:
         level = getattr(logging, self.config['level'])
         write_file = self.config["write_file"]
         logging.basicConfig(level=level, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-        self.logger = logging.getLogger("{}.log".format(self.__class__.__name__))
+        self.logger = logging.getLogger(self.__class__.__name__)
         if write_file:
             file_log = logging.FileHandler("{}.log".format(self.__class__.__name__))
             file_log.setLevel(level)
