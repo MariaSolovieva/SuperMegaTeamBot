@@ -4,8 +4,9 @@ import logging
 
 import vk_api
 from vk_api.longpoll import VkLongPoll, VkEventType
-
-from commands import commands
+from random import getrandbits
+from command_system import command_list
+import messageHandler
 
 
 class VKBot:
@@ -37,26 +38,36 @@ class VKBot:
 
         try:
             for event in longpoll.listen():
-                if event.type == VkEventType.MESSAGE_NEW and event.from_chat:
-                    msg = event.text.lower()
-                    if msg in commands:
-                        username = self.get_username(event.user_id)
-                        self.reply(event.chat_id, commands[msg].format(user_id=event.user_id, username=username))
+
+                if event.type == VkEventType.MESSAGE_NEW:
+
+                            message, attachment = messageHandler.create_answer(event)
+                            if message is not None or attachment is not None:
+                                if event.from_chat:
+                                    self.replyToChat(event.chat_id, message, attachment)
+                                elif event.from_user:
+                                    self.replyToUser(event.user_id, message, attachment)
+
         except KeyboardInterrupt:
             self.logger.info("Bot finished.")
             sys.exit("\nExit")
 
-    def get_username(self, user_id: int) -> str:
-        """Получить имя пользователя """
-
-        return self.session.method("users.get", {"user_ids": user_id})[0]['first_name']
-
-    def reply(self, chat_id: int, msg: str) -> None:
+    def replyToChat(self, chat_id: int, msg: str, attach: str) -> None:
         """Ответ от бота в чат"""
-
+        self.logger.info(f'Chat: {chat_id} Message: {msg} Attachment: {attach}')
         self.session.method('messages.send', {
             "chat_id": chat_id,
             "message": msg,
-            "random_id": 0
+            "attachment": attach,
+            "random_id": getrandbits(64)
+        })
+    def replyToUser(self, user_id: int, msg: str, attach: str) -> None:
+        """Ответ от бота в чат"""
+        self.logger.info(f'User: {user_id} Message: {msg} Attachment: {attach}')
+        self.session.method('messages.send', {
+            "user_id": user_id,
+            "message": msg,
+            "attachment": attach,
+            "random_id": getrandbits(64)
         })
 
