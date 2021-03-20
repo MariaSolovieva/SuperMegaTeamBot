@@ -31,7 +31,7 @@ class VKBot:
         try:
             for event in longpoll.listen():
 
-                if event.type == VkBotEventType.MESSAGE_NEW and (event.from_chat or event.from_user):
+                if event.type == VkBotEventType.MESSAGE_NEW:
 
                     e_msg = event.object.message
                     msg = e_msg['text'].lower()
@@ -43,17 +43,20 @@ class VKBot:
                     command.values = _vars
                     answer = command.command(msg)
                     if answer:
-                         self.reply(event.chat_id, answer, None)
-
+                        if event.from_chat:
+                            self.reply(None, event.chat_id, answer, None)
+                        if event.from_user:
+                            self.reply(e_msg['from_id'], None, answer, None)
         except KeyboardInterrupt:
             self.logger.info("Bot finished.")
             sys.exit("\nExit")
 
-    def reply(self, chat_id: int, msg: str, attach: str) -> None:
+    def reply(self, user_id: int, chat_id: int, msg: str, attach: str) -> None:
         """Ответ от бота в чат"""
 
         self.session.method('messages.send', {
             "chat_id": chat_id,
+            "user_id": user_id,
             "message": msg,
             "attachment": attach,
             "random_id": getrandbits(64)
